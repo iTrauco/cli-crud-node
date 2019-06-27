@@ -6,27 +6,27 @@ mongoose.Promise = global.Promise; // Permits use of native promises w/o throwin
 // we assign the connection instance to a constant to be used later in closing the connection 
 
 // define the 'contact' schema
-const constactChema = mongoose.Schema({
-    firstname: {type: String, set: toLower},
-    lastname: {type: String, set: toLower},
-    phone: {type: String, set: toLower},
-    email: {type: String, set: toLower}
-});
+// 'toLower' function supports db friendly 'case-insensitive inexact matches'
+const contactSchema = mongoose.Schema({
+    firstname: { type: String, set: LowerCase },
+    lastname: { type: String, set: LowerCase },
+    phone: { type: String, set: LowerCase },
+    email: { type: String, set: LowerCase }
+  });
 
 // define model as an interface with the db
 const Contact = mongoose.model('Contact', contactSchema);
 
 /**
- * @function  [addContact] // controller function
+ * @function  [addContact]
  * @returns {String} Status
  */
-
 const addContact = (contact) => {
-    Contact.create(contact, (err) => {
-        assert.equal(null, err);
-        console.info('New contact added');
-        db.disconnect();
-    });
+  Contact.create(contact, (err) => {
+    assert.equal(null, err);
+    console.info('New contact added');
+    db.disconnect();
+  });
 };
 
 
