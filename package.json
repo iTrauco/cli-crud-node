@@ -1,5 +1,7 @@
 {
-  "name": "cli-crud-node",
+  "name": "contacto",
+  "preferGlobal": true,
+  "bin": "./contact.js",
   "version": "1.0.0",
   "description": "A CLI initiated Node.js CRUD app ",
   "main": "index.js",
