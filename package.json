@@ -15,8 +15,10 @@
     "say-hello": "echo 'Hello World'",    
     "awesome-npm": "npm run say-hello && echo 'echo NPM is awesome!'", 
     "clean": "rm -r dist && mkdir dist",    
-    "build": "npm run clean && webpack"
-
+    "presay-hello": "echo 'I run before say-hello'",    
+    "postsay-hello": "echo 'I run after say-hello'",
+    "prebuild": "npm run clean",   
+    "build": "webpack" 
   },
   "author": "",
   "license": "ISC"
