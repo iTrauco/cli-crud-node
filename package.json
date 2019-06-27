@@ -1,5 +1,5 @@
 {
-  "name": "contact",
+  "name": "contacto",
   "preferGlobal": true,
   "bin": "./contact.js",
   "version": "1.0.0",
@@ -7,7 +7,6 @@
   "main": "index.js",
   "dependencies": {
     "commander": "^2.20.0",
-    "express": "^4.17.1",
     "inquirer": "^6.4.1",
     "mongoose": "^5.6.1"
   },

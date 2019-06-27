@@ -1,44 +1,49 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-// Require logic.js file and extract controller functions using JS destructuring assignment
-const { addContact, getContact } = require('./logic');
-const { prompt } = require('inquirer');  // require inquirerjs library
+const { prompt } = require('inquirer');
 
-// Craft questions to present to users
+const { 
+  addContact,
+  getContact,
+  getContactList,
+  updateContact,
+  deleteContact
+} = require('./logic'); 
+
 const questions = [
-    {
-      type : 'input',
-      name : 'firstname',
-      message : 'Employee First Name ....'
-    },
-    {
-      type : 'input',
-      name : 'lastname',
-      message : 'Employee Last Name ...'
-    },
-    {
-      type : 'input',
-      name : 'phone',
-      message : 'Work Number'
-    },
-    {
-      type : 'input',
-      name : 'email',
-      message : 'Work Email'
-    }
-  ];
+  {
+    type : 'input',
+    name : 'firstname',
+    message : 'Enter firstname ..'
+  },
+  {
+    type : 'input',
+    name : 'lastname',
+    message : 'Enter lastname ..'
+  },
+  {
+    type : 'input',
+    name : 'phone',
+    message : 'Enter phone number ..'
+  },
+  {
+    type : 'input',
+    name : 'email',
+    message : 'Enter email address ..'
+  }
+];
 
 program
-  .version('0.0.2')
-  .description('Contact management system');
-// IV of V
-  program
-  .command('addContact') // No need of specifying arguments here
+  .version('0.0.1')
+  .description('contact management system')
+
+program
+  .command('addContact')
   .alias('a')
   .description('Add a contact')
   .action(() => {
-    prompt(questions).then(answers =>
+    prompt(questions).then((answers) =>
       addContact(answers));
   });
 
@@ -48,5 +53,30 @@ program
   .description('Get contact')
   .action(name => getContact(name));
 
-program.parse(process.argv);
+program
+  .command('updateContact <_id>')
+  .alias('u')
+  .description('Update contact')
+  .action(_id => {
+    prompt(questions).then((answers) =>
+      updateContact(_id, answers));
+  });
 
+program
+  .command('deleteContact <_id>')
+  .alias('d')
+  .description('Delete contact')
+  .action(_id => deleteContact(_id));
+
+program
+  .command('getContactList')
+  .alias('l')
+  .description('List contacts')
+  .action(() => getContactList());
+
+// Assert that a VALID command is provided 
+if (!process.argv.slice(2).length || !/[arudl]/.test(process.argv.slice(2))) {
+  program.outputHelp();
+  process.exit();
+}
+program.parse(process.argv)
