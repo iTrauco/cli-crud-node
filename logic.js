@@ -1,20 +1,80 @@
-const mongoose = require('mongoose')  // an object document-wrapper for node
-const assert = require('assert'); // Assert module is bundled w/ node
-mongoose.Promise = global.Promise; // Permits use of native promises w/o throwing shady errors
+// const mongoose = require('mongoose')  // an object document-wrapper for node
+// const assert = require('assert'); // Assert module is bundled w/ node
+// mongoose.Promise = global.Promise; // Permits use of native promises w/o throwing shady errors
 
-// connect to a single MongoDB instance, the connection string could be that of a remote server
-// we assign the connection instance to a constant to be used later in closing the connection 
+// // connect to a single MongoDB instance, the connection string could be that of a remote server
+// // we assign the connection instance to a constant to be used later in closing the connection 
 
-// define the 'contact' schema
-// 'toLower' function supports db friendly 'case-insensitive inexact matches'
+// // define the 'contact' schema
+// // 'toLower' function supports db friendly 'case-insensitive inexact matches'
+// const contactSchema = mongoose.Schema({
+//     firstname: { type: String, set: LowerCase },
+//     lastname: { type: String, set: LowerCase },
+//     phone: { type: String, set: LowerCase },
+//     email: { type: String, set: LowerCase }
+//   });
+
+// // define model as an interface with the db
+// const Contact = mongoose.model('Contact', contactSchema);
+
+// /**
+//  * @function  [addContact]
+//  * @returns {String} Status
+//  */
+// const addContact = (contact) => {
+//   Contact.create(contact, (err) => {
+//     assert.equal(null, err);
+//     console.info('New contact added');
+//     db.disconnect();
+//   });
+// };
+
+
+// /** 
+//  * @function  [getContact] // controller function
+//  * @returns {Json} contacts
+//  */
+
+//  const getContact = (name) => {
+//      // define search criteria. the search here is case-insensitive and inexact 
+//      const search = new RegExp(name, 'i');
+//     Contact.find({$or: [{firstname: search}, {lastname: search}]})
+//     .exec((err, contact) => {
+//         assert.equal(null, err);
+//         console.info(contact);
+//         console.info(`${contact.length} matches`);
+//         db.disconnect();
+//     });
+//  };
+
+//  // export all methods
+//  module.exports = { addContact, getContact };
+//
+//////=================================================================
+//////=================================================================
+// ORIGINAL
+const mongoose = require('mongoose'); // An Object-Document Mapper for Node.js
+const assert = require('assert'); // N.B: Assert module comes bundled with Node.js.
+mongoose.Promise = global.Promise; // Allows us to use Native promises without throwing error.
+
+// Connect to a single MongoDB instance. The connection string could be that of a remote server
+// We assign the connection instance to a constant to be used later in closing the connection
+const db = mongoose.connect('mongodb://localhost:27017/contact-manager');
+
+// Converts value to lowercase
+function toLower(v) {
+  return v.toLowerCase();
+}
+
+// Define a contact Schema
 const contactSchema = mongoose.Schema({
-    firstname: { type: String, set: LowerCase },
-    lastname: { type: String, set: LowerCase },
-    phone: { type: String, set: LowerCase },
-    email: { type: String, set: LowerCase }
-  });
+  firstname: { type: String, set: toLower },
+  lastname: { type: String, set: toLower },
+  phone: { type: String, set: toLower },
+  email: { type: String, set: toLower }
+});
 
-// define model as an interface with the db
+// Define model as an interface with the database
 const Contact = mongoose.model('Contact', contactSchema);
 
 /**
@@ -29,23 +89,21 @@ const addContact = (contact) => {
   });
 };
 
-
-/** 
- * @function  [getContact] // controller function
+/**
+ * @function  [getContact]
  * @returns {Json} contacts
  */
+const getContact = (name) => {
+  // Define search criteria. The search here is case-insensitive and inexact.
+  const search = new RegExp(name, 'i');
+  Contact.find({$or: [{firstname: search }, {lastname: search }]})
+  .exec((err, contact) => {
+    assert.equal(null, err);
+    console.info(contact);
+    console.info(`${contact.length} matches`);
+    db.disconnect();
+  });
+};
 
- const getContact = (name) => {
-     // define search criteria. the search here is case-insensitive and inexact 
-     const search = new RegExp(name, 'i');
-    Contact.find({$or: [{firstname: search}, {lastname: search}]})
-    .exec((err, contact) => {
-        assert.equal(null, err);
-        console.info(contact);
-        console.info(`${contact.length} matches`);
-        db.disconnect();
-    });
- };
-
- // export all methods
- module.exports = { addContact, getContact };
+// Export all methods
+module.exports = {     addContact, getContact };
