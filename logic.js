@@ -4,9 +4,10 @@ mongoose.Promise = global.Promise; // Allows us to use Native promises without t
 
 // Connect to a single MongoDB instance. The connection string could be that of a remote server
 // We assign the connection instance to a constant to be used later in closing the connection
-mongoose.connect('mongodb://localhost:27017/contact-manager');
+mongoose.connect('mongodb://localhost:27017/contact-manager', { useNewUrlParser: true } );
 const db = mongoose.connection;
 
+// const 
 
 // Converts value to lowercase
 function toLower(v) {
@@ -48,7 +49,7 @@ const getContact = (name) => {
     assert.equal(null, err);
     console.info(contact);
     console.info(`${contact.length} matches`);
-    db.disconnect();
+    db.close();
   });
 };
 
