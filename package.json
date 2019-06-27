@@ -10,6 +10,7 @@
   },
   "devDependencies": {},
   "scripts": {  
+    "bash-hello": "bash hello.sh",
     "say-hello": "echo 'Hello World'",    
     "awesome-npm": "npm run say-hello && echo 'echo NPM is awesome!'", 
     "clean": "rm -r dist && mkdir dist",    
