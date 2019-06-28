@@ -1,3 +1,3 @@
 # cli-crud-node
 
-A Node.js command line application. 
+A Node.js CRUD command line application. 
